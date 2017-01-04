@@ -176,6 +176,7 @@ describe(`plugin-board`, () => {
         })
           .then((res) => {
             existingChannelsCount = res.length;
+            console.log("Existing channel count: ", existingChannelsCount);
             assert(existingChannelsCount < pageLimit, `the existing channel count must be less that pageLimit for this test`);
             numChannelsToAdd = pageLimit - existingChannelsCount + 1;
           })
@@ -210,10 +211,11 @@ describe(`plugin-board`, () => {
             console.log(`Requesting next page of channels: `, channelPage.links[`next`]);
             return channelPage.next();
           })
-          .then((channelPage) => {
-            console.log(`Second page of channels`, channelPage.items);
-            assert.lengthOf(channelPage, 1);
-            assert(!channelPage.hasNext());
+          .then((channelPage2) => {
+            console.log(`Has third page of channels: `, channelPage2.links[`next`]);
+            console.log(`Second page of channels`, channelPage2.items);
+            assert.lengthOf(channelPage2, 1);
+            assert(!channelPage2.hasNext());
           });
       });
     });
