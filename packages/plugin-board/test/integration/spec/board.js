@@ -53,7 +53,12 @@ describe(`plugin-board`, () => {
         return conversation;
       }));
 
-    before(`create channel (board)`, () => participants[0].spark.board.createChannel({aclUrl: conversation.id})
+    before(`create channel (board)`, () => participants[0].spark.board.createChannel({
+      aclUrl: conversation.id,
+      properties: {
+        index: -1
+      }
+    })
       .then((channel) => {
         board = channel;
         return channel;
@@ -180,7 +185,10 @@ describe(`plugin-board`, () => {
 
             for (let i = 0; i < numChannelsToAdd; i++) {
               promises.push(participants[0].spark.board.createChannel({
-                aclUrl: conversation.id
+                aclUrl: conversation.id,
+                properties: {
+                  index: i
+                }
               }));
             }
             return Promise.all(promises);
@@ -196,11 +204,14 @@ describe(`plugin-board`, () => {
 
           // get boards, page 2
           .then((channelPage) => {
+            console.log(`First page of channels`, channelPage.items);
             assert.lengthOf(channelPage.items, pageLimit);
             assert(channelPage.hasNext());
+            console.log(`Requesting next page of channels: `, channelPage.links[`next`]);
             return channelPage.next();
           })
           .then((channelPage) => {
+            console.log(`Second page of channels`, channelPage.items);
             assert.lengthOf(channelPage, 1);
             assert(!channelPage.hasNext());
           });
