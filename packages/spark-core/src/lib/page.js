@@ -49,6 +49,7 @@ export default class Page {
    * @returns {Page}
    */
   constructor(res, spark) {
+    console.log("Page Headers: ", res.headers);
     itemsMap.set(this, res.body.items);
     linksMap.set(this, Page.parseLinkHeaders(res.headers.link));
     sparksMap.set(this, spark);
