@@ -216,6 +216,8 @@ describe(`plugin-board`, () => {
           // get boards, page 2
           .then((channelPage) => {
             assert.lengthOf(channelPage.items, pageLimit);
+            assert.property(channelPage.headers, 'access-control-expose-headers', 'contains CORS expose headers');
+            assert.include(channelPage.headers['access-control-expose-headers'], 'Link', 'Link exists in \'Access-Control-Expose-Headers\' header');
             assert(channelPage.hasNext());
             return channelPage.next();
           })
@@ -309,6 +311,8 @@ describe(`plugin-board`, () => {
         it(`using a client defined page limit`, () => participants[0].spark.board.getContents(board, {contentsLimit: 25})
           .then((res) => {
             assert.lengthOf(res, 25);
+            assert.property(res.headers, 'access-control-expose-headers', 'contains CORS expose headers');
+            assert.include(res.headers['access-control-expose-headers'], 'Link', 'Link exists in \'Access-Control-Expose-Headers\' header');
             assert(res.hasNext());
             return res.next();
           })

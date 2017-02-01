@@ -7,11 +7,19 @@
 const itemsMap = new WeakMap();
 const linksMap = new WeakMap();
 const sparksMap = new WeakMap();
+const headersMap = new WeakMap();
 
 /**
  * @class Page
  */
 export default class Page {
+  /**
+   * @type {Array}
+   */
+  get headers() {
+    return headersMap.get(this);
+  }
+
   /**
    * @type {Array}
    */
@@ -52,7 +60,7 @@ export default class Page {
     itemsMap.set(this, res.body.items);
     linksMap.set(this, Page.parseLinkHeaders(res.headers.link));
     sparksMap.set(this, spark);
-
+    headersMap.set(this, res.headers);
     return this;
   }
 
